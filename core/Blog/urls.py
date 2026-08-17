@@ -1,8 +1,11 @@
 from django.urls import path
 from django.views.generic import TemplateView
-from .views import PostView
+from .views import *
+
+app_name='Blog' 
 
 
 urlpatterns = [
 path('', PostView.as_view(), name='post'),
+path('go-to-google/', GoToGoogleView.as_view(), name='go-to-google'),
 ]

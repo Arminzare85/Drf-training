@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView , RedirectView
 from .models import Post
+
 
 
 # Create your views here.
@@ -10,4 +11,7 @@ class PostView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['post'] = Post.objects.all()
         return context
-    
+
+
+class GoToGoogleView(RedirectView):
+    url = 'https://www.google.com'
