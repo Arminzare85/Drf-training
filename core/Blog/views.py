@@ -1,9 +1,7 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView , RedirectView , ListView 
+from django.views.generic import TemplateView , RedirectView , ListView , DetailView , FormView
 from django.core.paginator import Paginator
-
-
-
+from .forms import PostForm
 from .models import Post
 
 
@@ -21,9 +19,23 @@ class GoToGoogleView(RedirectView):
     url = 'https://www.google.com'
 
 
-class PostDetailView(ListView , Paginator):
+class PostListView(ListView , Paginator):
     model = Post
     context_object_name = 'posts'
     paginate_by = 2
     ordering = ['-author']
+
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'post_detail.html'
+    context_object_name = "post"
     
+class CreatePostView(FormView):
+    template_name = 'create.html'
+    form_class = PostForm
+    success_url = '/blog/post/'
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)

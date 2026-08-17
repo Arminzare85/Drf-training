@@ -8,7 +8,7 @@
 <body>
 
     {% for post in posts %}
-        <h1>{{ post.title }}</h1>
+        <a href="{% url 'blog:post-detail' post.id %}">{{ post.title }}</a>
         <p>{{ post.content }}</p>
     {% endfor %}
     {% if is_paginated %}
