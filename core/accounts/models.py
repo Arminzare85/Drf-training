@@ -2,6 +2,7 @@ from django.contrib.auth.models import PermissionsMixin , BaseUserManager , Abst
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.conf import settings
 class UserManager(BaseUserManager):
     def create_user(self, email,password=None, **extra_fields):
         if not email:
@@ -39,7 +40,7 @@ class User(AbstractBaseUser , PermissionsMixin):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     image = models.ImageField(blank=True, null=True)

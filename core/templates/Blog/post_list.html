@@ -10,6 +10,7 @@
     {% for post in posts %}
         <a href="{% url 'blog:post-detail' post.id %}">{{ post.title }}</a>
         <p>{{ post.content }}</p>
+        <small>{{ post.author.first_name }} - {{ post.author.last_name }}</small>
         <a href="{% url 'blog:edit-post' post.id %}">
             <h4>Edit</h4>
         </a>
