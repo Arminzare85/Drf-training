@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView , RedirectView , ListView , DetailView , FormView , CreateView
+from django.views.generic import TemplateView , RedirectView , ListView , DetailView , UpdateView , CreateView
 from django.core.paginator import Paginator
 from .forms import PostForm
 from .models import Post
@@ -49,3 +49,10 @@ class CreatePostView(CreateView):
         form.instance.author = self.request.user
         form.save()
 
+
+
+class PostEditView(UpdateView):
+    model = Post
+    form_class = PostForm
+    success_url = '/blog/post/'
+    template_name = 'create.html'

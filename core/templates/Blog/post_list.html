@@ -10,6 +10,9 @@
     {% for post in posts %}
         <a href="{% url 'blog:post-detail' post.id %}">{{ post.title }}</a>
         <p>{{ post.content }}</p>
+        <a href="{% url 'blog:edit-post' post.id %}">
+            <h4>Edit</h4>
+        </a>
     {% endfor %}
     {% if is_paginated %}
 
