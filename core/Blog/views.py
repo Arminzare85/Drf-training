@@ -3,7 +3,7 @@ from django.views.generic import TemplateView , RedirectView , ListView , Detail
 from django.core.paginator import Paginator
 from .forms import PostForm
 from .models import Post
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 # Create your views here.
@@ -40,7 +40,7 @@ class PostDetailView(DetailView):
 #         form.save()
 #         return super().form_valid(form)
 
-class CreatePostView(CreateView):
+class CreatePostView(LoginRequiredMixin , CreateView):
     model = Post
     template_name = 'create.html'
     form_class = PostForm
@@ -51,14 +51,13 @@ class CreatePostView(CreateView):
 
 
 
-class PostEditView(UpdateView):
+class PostEditView(LoginRequiredMixin , UpdateView):
     model = Post
     form_class = PostForm
     success_url = '/blog/post/'
     template_name = 'create.html'
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin  , DeleteView):
     model = Post
     success_url = '/blog/post/'
-    

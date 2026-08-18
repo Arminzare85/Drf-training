@@ -24,6 +24,7 @@ from django.urls import include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('blog/', include('Blog.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
