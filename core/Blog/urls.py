@@ -12,4 +12,5 @@ path('go-to-google/', GoToGoogleView.as_view(), name='go-to-google'),
 path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
 path('post/create/', CreatePostView.as_view(), name='create-post'),
 path('post/edit/<int:pk>/', PostEditView.as_view(), name='edit-post'),
+path('post/delete/<int:pk>/', PostDeleteView.as_view(), name='delete-post'),
 ]
