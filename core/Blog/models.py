@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 # from core.accounts.models import User
 # Create your models here.
+from django.urls import reverse
 
 # User = get_user_model()
 # Create your models here.
@@ -19,9 +20,12 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+    def snippet(self):
+        return self.content[:5]
 
 
-
+    def get_absolute_url(self):
+        return reverse('api_v1:post-detail', kwargs={'pk': self.id})
 
 
 
