@@ -2,11 +2,11 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view , permission_classes
 from rest_framework.permissions import IsAuthenticated ,IsAuthenticatedOrReadOnly
-from .serializers import PostSerializer
-from ...models import Post
+from .serializers import PostSerializer , CategorySerializer
+from ...models import Post , Category
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView , RetrieveUpdateDestroyAPIView
-
+from rest_framework import viewsets
 
 # Create your views here.
 # @api_view(['GET', 'POST'])
@@ -47,17 +47,26 @@ from rest_framework.generics import ListCreateAPIView , RetrieveUpdateDestroyAPI
 
 
 """ CBV to showing posts """
-class PostList(ListCreateAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+# class PostList(ListCreateAPIView):
+#     queryset = Post.objects.all()
+#     serializer_class = PostSerializer
+#     permission_classes = [IsAuthenticatedOrReadOnly]
 
+# class PostDetail(RetrieveUpdateDestroyAPIView ):
 
-
-
-class PostDetail(RetrieveUpdateDestroyAPIView ):
-
-    serializer_class = PostSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
-    queryset = Post.objects.all()
+#     serializer_class = PostSerializer
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+#     queryset = Post.objects.all()
         
+
+
+""" CBV to CRUD posts in one view """
+class PostModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+class CategoryModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
