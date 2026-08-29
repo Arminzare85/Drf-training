@@ -11,6 +11,7 @@ from .permissions import IsOwnerOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from rest_framework.filters import OrderingFilter
+from .pagination import CustomPagination
 
 
 # Create your views here.
@@ -67,14 +68,20 @@ from rest_framework.filters import OrderingFilter
 
 """ CBV to CRUD posts in one view """
 class PostModelViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly , IsOwnerOrReadOnly]
+
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    filter_backends = [DjangoFilterBackend , SearchFilter , OrderingFilter]
-    filterset_fields = ['category','author']
-    search_fields = ['title' , 'content']
-    ordering_fields = [ 'published_time' ]
 
+
+    permission_classes = [IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
+
+    filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
+
+    filterset_fields = ['category', 'author']
+    ordering_fields = ['published_time']
+    search_fields = ['title', 'content']
+    
+    pagination_class = CustomPagination
 class CategoryModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Category.objects.all()

@@ -141,3 +141,9 @@ UNFOLD = {
     "SITE_HEADER": "My Store",
     "SITE_SUBHEADER": "Administration",
 }
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+}
