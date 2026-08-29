@@ -9,6 +9,8 @@ from rest_framework.generics import ListCreateAPIView , RetrieveUpdateDestroyAPI
 from rest_framework import viewsets
 from .permissions import IsOwnerOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
+
 
 # Create your views here.
 # @api_view(['GET', 'POST'])
@@ -67,8 +69,9 @@ class PostModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly , IsOwnerOrReadOnly]
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend , SearchFilter]
     filterset_fields = ['category','author']
+    search_fields = ['title' , 'content']
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
