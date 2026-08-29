@@ -7,6 +7,7 @@ from ...models import Post , Category
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView , RetrieveUpdateDestroyAPIView
 from rest_framework import viewsets
+from .permissions import IsOwnerOrReadOnly
 
 # Create your views here.
 # @api_view(['GET', 'POST'])
@@ -62,7 +63,7 @@ from rest_framework import viewsets
 
 """ CBV to CRUD posts in one view """
 class PostModelViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly , IsOwnerOrReadOnly]
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
