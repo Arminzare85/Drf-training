@@ -10,6 +10,7 @@ from rest_framework import viewsets
 from .permissions import IsOwnerOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
+from rest_framework.filters import OrderingFilter
 
 
 # Create your views here.
@@ -69,9 +70,10 @@ class PostModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly , IsOwnerOrReadOnly]
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    filter_backends = [DjangoFilterBackend , SearchFilter]
+    filter_backends = [DjangoFilterBackend , SearchFilter , OrderingFilter]
     filterset_fields = ['category','author']
     search_fields = ['title' , 'content']
+    ordering_fields = [ 'published_time' ]
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
