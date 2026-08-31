@@ -77,10 +77,10 @@ class PostModelViewSet(viewsets.ModelViewSet):
 
     filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter]
 
-    filterset_fields = ['category', 'author']
+    filterset_fields = {'category': ["exact","in"] , 'author': ['exact']}
     ordering_fields = ['published_time']
     search_fields = ['title', 'content']
-    
+
     pagination_class = CustomPagination
 class CategoryModelViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
