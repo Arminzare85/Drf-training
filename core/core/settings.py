@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'accounts',
     'Blog',
     "rest_framework",
+    "rest_framework.authtoken",
     'django_filters',
     'drf_spectacular',
 
@@ -149,6 +150,11 @@ REST_FRAMEWORK = {
        
     ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
 }
 SPECTACULAR_SETTINGS = {
     'TITLE': 'My API',
