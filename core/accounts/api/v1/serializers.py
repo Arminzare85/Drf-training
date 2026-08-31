@@ -2,6 +2,7 @@ from rest_framework import serializers
 from ...models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core import exceptions
+from django.contrib.auth import authenticate
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -38,3 +39,24 @@ class UserSerializer(serializers.ModelSerializer):
             password=password,
             **validated_data
         )
+
+
+class TokenObtainPairSerializer(serializers.Serializer):
+    email = serializers.EmailField(label='Email' , write_only=True)
+    password = serializers.CharField(label='Password' , write_only=True , style={'input_type': 'password'})
+    token = serializers.CharField(label='Token' , write_only=True)
+
+    def validate(self, data):
+        username = data.get('email')
+        password = data.get('password')
+        if username and password:
+            user = authenticate(username=username, password=password)
+            if not user:
+                raise serializers.ValidationError('Invalid credentials')
+
+        else:
+            raise serializers.ValidationError('Please provide both username and password')
+        
+        data['user'] = user
+            
+        return data
