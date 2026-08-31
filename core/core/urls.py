@@ -21,10 +21,19 @@ from django.conf.urls.static import static
 # from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from django.urls import include
 
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+    SpectacularRedocView,
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('blog/', include('Blog.urls' , namespace='api-v1')),
     path('accounts/', include('accounts.urls')),
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('swagger/', SpectacularSwaggerView.as_view(url_name='schema')),
+    path('redoc/', SpectacularRedocView.as_view(url_name='schema')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

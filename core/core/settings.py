@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'Blog',
     "rest_framework",
     'django_filters',
+    'drf_spectacular',
 
 ]
 
@@ -145,5 +146,12 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
+       
     ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'My API',
+    'DESCRIPTION': 'My Django REST API',
+    'VERSION': '1.0.0',
 }
