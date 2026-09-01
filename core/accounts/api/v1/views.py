@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from .serializers import UserSerializer , TokenObtainPairSerializer
+from .serializers import CustomTokenObtainPairSerializer , UserSerializer , ChangePasswordSerializer
 from rest_framework import generics
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
+from rest_framework_simplejwt.views import TokenObtainPairView
+from ...models import User
 
 
 
@@ -21,24 +23,44 @@ class RegisterView(generics.GenericAPIView):
         return Response(serializer.errors, status=400)
 
 
-class CustomTokenObtainPairView(ObtainAuthToken):
-    serializer_class = TokenObtainPairSerializer
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data , context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        token, _ = Token.objects.get_or_create(user=user)
-        return Response({
-            'token': token.key,
-            'user': user.pk,
-            'email': user.email,
-        })
+# class CustomTokenObtainAuthToken(ObtainAuthToken):
+#     serializer_class = TokenAuthSerializer
+#     def post(self, request, *args, **kwargs):
+#         serializer = self.serializer_class(data=request.data , context={'request': request})
+#         serializer.is_valid(raise_exception=True)
+#         user = serializer.validated_data['user']
+#         token, _ = Token.objects.get_or_create(user=user)
+#         return Response({
+#             'token': token.key,
+#             'user': user.pk,
+#             'email': user.email,
+#         })
 
 
-class CustomTokenDestroyView(APIView):
+# class CustomDisableAuthToken(APIView):
+#     permission_classes = [IsAuthenticated]
+#     def post(self, request):
+#         request.user.auth_token.delete()
+
+#         return Response(status=204)
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+
+
+class ChangePasswordView(generics.GenericAPIView):
+    model = User
     permission_classes = [IsAuthenticated]
-    def post(self, request):
-        request.user.auth_token.delete()
-
-        return Response(status=204)
-
+    serializer_class = ChangePasswordSerializer
+    def get_object(self):
+        return self.request.user
+    def put(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            user = self.get_object()
+            user.set_password(serializer.validated_data['new_password'])
+            user.save()
+            return Response(status=204)
+        return Response(serializer.errors, status=400)
