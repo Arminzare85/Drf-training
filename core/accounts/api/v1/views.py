@@ -1,14 +1,15 @@
 from django.shortcuts import render
 from rest_framework.response import Response
-from .serializers import CustomTokenObtainPairSerializer , UserSerializer , ChangePasswordSerializer
+from .serializers import CustomTokenObtainPairSerializer , UserSerializer , ChangePasswordSerializer , ProfileSerializer
 from rest_framework import generics
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
-from ...models import User
-
+from ...models import User , Profile
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 
 
 class RegisterView(generics.GenericAPIView):
@@ -64,3 +65,15 @@ class ChangePasswordView(generics.GenericAPIView):
             user.save()
             return Response(status=204)
         return Response(serializer.errors, status=400)
+
+
+
+class UserProfileView(generics.RetrieveUpdateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
+    def get_object(self):
+        queryset = self.get_queryset()
+        obj =get_object_or_404(queryset, user=self.request.user)
+        return obj
+        
