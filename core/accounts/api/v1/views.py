@@ -59,6 +59,9 @@ class ChangePasswordView(generics.GenericAPIView):
         return self.request.user
     def put(self, request):
         serializer = self.get_serializer(data=request.data)
+        user = self.get_object()
+        if not user.is_verified:
+            return Response({"detail": "Your profile is not verified."}, status=400)
         if serializer.is_valid():
             user = self.get_object()
             user.set_password(serializer.validated_data['new_password'])
@@ -72,6 +75,7 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     permission_classes = [IsAuthenticated]
+    
     def get_object(self):
         queryset = self.get_queryset()
         obj =get_object_or_404(queryset, user=self.request.user)

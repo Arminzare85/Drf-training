@@ -4,14 +4,14 @@ from django.contrib.auth.admin import UserAdmin
 
 
 class UserAdmin(UserAdmin):
-    list_display = ("email", "is_staff", "is_active", "created_time")
+    list_display = ("email", "is_staff", "is_active", "is_verified", "created_time")
     search_fields = ("email",)
     ordering = ("email",)
-    list_filter = ("is_staff", "is_active")
+    list_filter = ("is_staff", "is_active", "is_verified")
     fieldsets = (
         (None, {"fields": ("email", "password")}),
 
-        ("info", {"fields": ("is_staff", "is_active" , "is_superuser")}),
+        ("info", {"fields": ("is_staff", "is_active" , "is_verified", "is_superuser")}),
         ("groups", {"fields": ("groups","user_permissions")}),
         
     )
@@ -20,7 +20,7 @@ class UserAdmin(UserAdmin):
             "MIO",
             {
                 "classes": ("wide",),
-                "fields": ("email", "password1", "password2" , "is_staff" , "is_active" , "is_superuser"),
+                "fields": ("email", "password1", "password2" , "is_staff" , "is_active", "is_verified" , "is_superuser"),
             },
         ),
     )
