@@ -10,7 +10,17 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from ...models import User , Profile
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-from .services.email import send_welcome_email
+from .services.email import  send_verification_email
+from django.contrib.auth import get_user_model
+from rest_framework.permissions import AllowAny
+from rest_framework.generics import get_object_or_404
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_decode
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+
+
+User = get_user_model()
 
 
 class RegisterView(generics.GenericAPIView):
@@ -85,6 +95,52 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
 
 class TestEmailView(APIView):
     permission_classes = [IsAuthenticated]
-    def post(self, request):
-        send_welcome_email(request.user)
-        return Response(status=204)
+    def post(self, request):  
+
+        user = request.user
+        uid = urlsafe_base64_encode(
+            force_bytes(user.pk)
+        )
+        token = default_token_generator.make_token(user)
+        verification_url = (
+            f"http://127.0.0.1:8000/accounts/api/v1/"
+            f"verify-email/{uid}/{token}/"
+        )
+        send_verification_email(
+            user,
+            verification_url
+        )
+        return Response(
+            {"detail": "Verification email sent."},
+            status=200
+        )
+
+
+class VerifyEmailView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, uid, token):
+
+        try:
+            uid = urlsafe_base64_decode(uid).decode()
+            user = User.objects.get(pk=uid)
+
+        except (User.DoesNotExist, ValueError, TypeError, OverflowError):
+            return Response(
+                {"detail": "Invalid verification link."},
+                status=400
+            )
+
+        if not default_token_generator.check_token(user, token):
+            return Response(
+                {"detail": "Invalid or expired verification link."},
+                status=400
+            )
+
+        user.is_verified = True
+        user.save(update_fields=["is_verified"])
+
+        return Response(
+            {"detail": "Email verified successfully."},
+            status=200
+        )
