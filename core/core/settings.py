@@ -162,3 +162,16 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'My Django REST API',
     'VERSION': '1.0.0',
 }
+    
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_HOST = "sandbox.smtp.mailtrap.io"
+EMAIL_PORT = 587
+
+EMAIL_HOST_USER = "d0e9973aeaf194"
+EMAIL_HOST_PASSWORD = "f2f0582a496ff4"
+
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+DEFAULT_FROM_EMAIL = "your-email@example.com"

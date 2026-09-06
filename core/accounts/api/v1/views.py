@@ -10,6 +10,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from ...models import User , Profile
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from .services.email import send_welcome_email
 
 
 class RegisterView(generics.GenericAPIView):
@@ -80,4 +81,10 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
         queryset = self.get_queryset()
         obj =get_object_or_404(queryset, user=self.request.user)
         return obj
-        
+
+
+class TestEmailView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        send_welcome_email(request.user)
+        return Response(status=204)
