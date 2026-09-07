@@ -1,6 +1,5 @@
 from django.core.mail import send_mail
 
-
 # def send_welcome_email(user , verification_url):
 #     send_mail(
 #         subject="Welcome!",
@@ -16,7 +15,8 @@ from django.core.mail import send_mail
 #         fail_silently=False,
 #     )
 
-def send_verification_email(user , verification_url):
+
+def send_verification_email(user, verification_url):
     send_mail(
         subject="Verify your email",
         message=f"""

@@ -1,17 +1,19 @@
-from django.urls import path , include
+from django.urls import path, include
 from .views import *
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView,
 )
+
 urlpatterns = [
-    path('register/', RegisterView.as_view(), name='register'),
-    path('test-email/', TestEmailView.as_view(), name='test-email'),
-    path('verify-email/<uid>/<token>/',VerifyEmailView.as_view(),name='verify-email'),
-    path('reset-password/', ChangePasswordView.as_view(), name='reset-password'),
-    path('profile/', UserProfileView.as_view(), name='profile'),
-    path('jwt/create/',  CustomTokenObtainPairView.as_view(), name='jwt-create'),
-    path('jwt/verify/', TokenVerifyView.as_view(), name='jwt-verify'),
-    path('jwt/refresh/',  TokenRefreshView.as_view(), name='jwt-refresh'),
+    path("register/", RegisterView.as_view(), name="register"),
+    # path('test-email/', TestEmailView.as_view(), name='test-email'),
+    path("verify-email/<uid>/<token>/", VerifyEmailView.as_view(), name="verify-email"),
+    path("verify-email/confirm/", ConfirmEmailView.as_view(), name="confirm-email"),
+    path("reset-password/", ChangePasswordView.as_view(), name="reset-password"),
+    path("profile/", UserProfileView.as_view(), name="profile"),
+    path("jwt/create/", CustomTokenObtainPairView.as_view(), name="jwt-create"),
+    path("jwt/verify/", TokenVerifyView.as_view(), name="jwt-verify"),
+    path("jwt/refresh/", TokenRefreshView.as_view(), name="jwt-refresh"),
 ]

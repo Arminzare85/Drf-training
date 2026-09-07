@@ -6,17 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Blog', '0002_alter_post_status'),
+        ("Blog", "0002_alter_post_status"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='post',
-            name='published',
+            model_name="post",
+            name="published",
         ),
         migrations.AddField(
-            model_name='post',
-            name='published_time',
+            model_name="post",
+            name="published_time",
             field=models.DateTimeField(blank=True, null=True),
         ),
     ]

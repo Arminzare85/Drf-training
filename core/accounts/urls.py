@@ -3,6 +3,6 @@ from .views import *
 from django.urls import include
 
 urlpatterns = [
-    path('',include('django.contrib.auth.urls')),
-    path('api/v1/', include('accounts.api.v1.urls')),
+    path("", include("django.contrib.auth.urls")),
+    path("api/v1/", include("accounts.api.v1.urls")),
 ]
