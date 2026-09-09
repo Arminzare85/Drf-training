@@ -9,7 +9,7 @@ from django.urls import reverse
 # User = get_user_model()
 # Create your models here.
 class Post(models.Model):
-    image = models.ImageField(upload_to="posts/")
+    image = models.ImageField(upload_to="posts/",blank=True, null=True)
     title = models.CharField(max_length=100)
     author = models.ForeignKey("accounts.Profile", on_delete=models.CASCADE)
     content = models.TextField()
