@@ -16,11 +16,11 @@ from .pagination import CustomPagination
 
 
 class PostModelViewSet(viewsets.ModelViewSet):
-
+    
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
-    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
 
